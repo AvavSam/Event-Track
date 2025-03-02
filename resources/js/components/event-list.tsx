@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Calendar, ChevronLeft, ChevronRight, Edit2, Filter, MapPin, Search, Trash2 } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, MapPin, Search, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { Event } from '../types';
 
@@ -10,6 +10,21 @@ export function EventList() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [totalPages, setTotalPages] = useState(1);
+
+    const handleDelete = async (eventId: number) => {
+        if (!confirm('Are you sure you want to delete this event?')) {
+            return;
+        }
+
+        try {
+            await axios.delete(`/api/v1/events/${eventId}`);
+            // Refresh the events list after deletion
+            setEvents(events.filter((event) => Number(event.id) !== eventId));
+        } catch (err) {
+            console.error('Error deleting event:', err);
+            alert('Failed to delete event. Please try again.');
+        }
+    };
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -44,10 +59,6 @@ export function EventList() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <button className="bg-secondary hover:bg-secondary/80 flex items-center gap-2 rounded-lg px-4 py-2 transition-colors">
-                    <Filter className="h-5 w-5" />
-                    <span>Filter</span>
-                </button>
             </div>
 
             {/* Event Grid */}
@@ -84,10 +95,10 @@ export function EventList() {
                                     <div className="flex items-center justify-between pt-2">
                                         <span className="text-card-foreground font-semibold">Rp.{event.price}</span>
                                         <div className="flex gap-2">
-                                            <button className="hover:bg-muted rounded-lg p-2 transition-colors">
-                                                <Edit2 className="h-4 w-4" />
-                                            </button>
-                                            <button className="text-destructive hover:bg-muted rounded-lg p-2 transition-colors">
+                                            <button
+                                                onClick={() => handleDelete(Number(event.id))}
+                                                className="text-destructive hover:bg-muted rounded-lg p-2 transition-colors"
+                                            >
                                                 <Trash2 className="h-4 w-4" />
                                             </button>
                                         </div>

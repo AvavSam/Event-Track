@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\event;
+use App\Models\Event;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreeventRequest;
 use App\Http\Requests\UpdateeventRequest;
 
 class EventController extends Controller
@@ -46,7 +45,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreeventRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -91,8 +90,9 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(event $event)
+    public function destroy(string $id)
     {
+        $event = Event::findOrFail($id);
         $event->delete();
         return response()->json(null, 204);
     }

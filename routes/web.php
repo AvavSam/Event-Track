@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('addEvent', function () {
     return Inertia::render('add-event');
   })->name('add-event');
-  Route::apiResource('api/v1/events', EventController::class);
+  Route::post('events', [EventController::class, 'store'])->name('events.store');
 });
 
 require __DIR__.'/settings.php';
