@@ -38,3 +38,24 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Event {
+    id: string;
+    title: string;
+    date: string;
+    location: string;
+    category: string;
+    description: string;
+    image_url: string;
+    price: number;
+    capacity: number;
+    registeredCount: number;
+    status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+}
+
+export interface EventStats {
+    totalEvents: number;
+    upcomingEvents: number;
+    totalParticipants: number;
+    totalRevenue: number;
+}

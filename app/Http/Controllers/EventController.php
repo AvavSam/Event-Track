@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\event;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreeventRequest;
 use App\Http\Requests\UpdateeventRequest;
 
